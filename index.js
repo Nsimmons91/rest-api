@@ -29,50 +29,55 @@ app.use(express.static('client'));
 app.get('/api/books', getBooks)
 
 // READ a specific book by ID
-app.get('/api/books/:bookID', cors(), (req, res) => {
-  const requestedBookID = parseInt(req.params.bookID);
-  const book = books.find(b => b.id === requestedBookID);
-  if (book) {
-    res.json(book);
-  } else {
-    res.status(404).json({ message: 'Book not found' });
-  }
-});
+app.get('/api/books/:id', getBooksById)
+
+// app.get('/api/books/:bookID', cors(), (req, res) => {
+//   const requestedBookID = parseInt(req.params.bookID);
+//   const book = books.find(b => b.id === requestedBookID);
+//   if (book) {
+//     res.json(book);
+//   } else {
+//     res.status(404).json({ message: 'Book not found' });
+//   }
+// });
 
 // CREATE a new book
-app.post('/api/books', (req, res) => {
-  const newBook = req.body;
-  newBook.id = books.length ? books[books.length - 1].id + 1 : 1; // Assign a new ID
-  books.push(newBook);
-  res.status(201).json(newBook);
-});
+app.post('/api/books', createBooks)
+// app.post('/api/books', (req, res) => {
+//   const newBook = req.body;
+//   newBook.id = books.length ? books[books.length - 1].id + 1 : 1; // Assign a new ID
+//   books.push(newBook);
+//   res.status(201).json(newBook);
+// });
 
 // UPDATE a book by ID
-app.put('/api/books/:bookID', (req, res) => {
-  const bookID = parseInt(req.params.bookID);
-  const bookIndex = books.findIndex(book => book.id === bookID);
+app.put('/api/books:id', updateBooks)
+// app.put('/api/books/:bookID', (req, res) => {
+//   const bookID = parseInt(req.params.bookID);
+//   const bookIndex = books.findIndex(book => book.id === bookID);
 
-  if (bookIndex !== -1) {
-    const updatedBook = { ...books[bookIndex], ...req.body };
-    books[bookIndex] = updatedBook;
-    res.json(updatedBook);
-  } else {
-    res.status(404).json({ message: 'Book not found' });
-  }
-});
+//   if (bookIndex !== -1) {
+//     const updatedBook = { ...books[bookIndex], ...req.body };
+//     books[bookIndex] = updatedBook;
+//     res.json(updatedBook);
+//   } else {
+//     res.status(404).json({ message: 'Book not found' });
+//   }
+// });
 
 // DELETE a book by ID
-app.delete('/api/books/:bookID', (req, res) => {
-  const bookID = parseInt(req.params.bookID);
-  const bookIndex = books.findIndex(book => book.id === bookID);
+app.delete('/api/books:id',deleteBooks)
+// app.delete('/api/books/:bookID', (req, res) => {
+//   const bookID = parseInt(req.params.bookID);
+//   const bookIndex = books.findIndex(book => book.id === bookID);
 
-  if (bookIndex !== -1) {
-    books.splice(bookIndex, 1);
-    res.status(204).end();
-  } else {
-    res.status(404).json({ message: 'Book not found' });
-  }
-});
+//   if (bookIndex !== -1) {
+//     books.splice(bookIndex, 1);
+//     res.status(204).end();
+//   } else {
+//     res.status(404).json({ message: 'Book not found' });
+//   }
+// });
 
 // creates a route `/` that is the homepage
 app.get('/', (req, res) => {
