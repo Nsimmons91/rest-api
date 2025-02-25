@@ -4,6 +4,7 @@ import cors from 'cors';
 import path from 'path';
 import books from './books.js';
 import pretty from 'express-prettify';
+import  getBooks from './db.js';
 
 const app = express();
 const PORT = 5000;
@@ -13,6 +14,7 @@ const __dirname = path.resolve();
 
 // Configuring cors middleware
 app.use(cors());
+
 
 // Configuring express-prettify middleware for working with JSON
 app.use(pretty({ query: 'pretty' }));
@@ -25,9 +27,10 @@ app.use(bodyParser.json());
 app.use(express.static('client'));
 
 // READ all books
-app.get("/api/books", (req, res) => {
-  res.json(books);
-});
+app.get('/api/books', getBooks)
+// app.get("/api/books", (req, res) => {
+//   res.json(books);
+// });
 
 // READ a specific book by ID
 app.get('/api/books/:bookID', cors(), (req, res) => {
@@ -79,5 +82,7 @@ app.delete('/api/books/:bookID', (req, res) => {
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'client', 'index.html'));
 });
+
+
 
 app.listen(PORT, () => console.log(`Hola! Server running on Port http://localhost:${PORT}`));
